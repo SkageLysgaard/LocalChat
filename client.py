@@ -1,36 +1,18 @@
-from socket import create_connection
+import socket
 import threading
 
-nickname = input("Choose a nickname: ")
-client = create_connection(("localhost", 5550))
 
-#the old way:
-#client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#client.connect(("localhost", 5550))
 
-def receive():
-    while True:
-        try:
-            message = client.recv(1024).decode("ascii")
-            if message == "NICK":
-                client.send(nickname.encode("ascii"))
-                pass
-            else:
-                print(message)
-        except:
-            print("An error occurred!")
-            client.close()
-            break
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("localhost", 5550))
 
-# Sending Messages To Server
-def write():
-    while True:
-        message = '{}: {}'.format(nickname, input(''))
-        client.send(message.encode('ascii'))
+print("connected...")
 
-# Starting Threads For Listening And Writing
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
+filename = input(str("Please enter a filename for the incoming file: "))
+file = open(filename, "wb")
+file_data = s.recv(1024)
+file.write(file_data)
+file.close()
+print("File has been recieved succsessfully!")
 
-write_thread = threading.Thread(target=write)
-write_thread.start()
+
